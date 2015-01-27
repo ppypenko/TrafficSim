@@ -1,0 +1,92 @@
+package edu.csc150;
+
+import java.awt.Color;
+import java.util.ArrayList;
+
+import greenfoot.Actor;
+import greenfoot.GreenfootImage;
+
+
+public class Intersection extends Actor{
+
+	private static final int START = 0, END = 1, NS = 1, EW = 2;
+	private int x, y, set=0;
+	ArrayList<IntFace> inInt = new ArrayList<IntFace>();
+	ArrayList<IntFace> nearInt = new ArrayList<IntFace>();	
+	
+	public Intersection(int x, int y){	
+		GreenfootImage road = new GreenfootImage(50, 50);
+		road.setColor(Color.GRAY);
+		road.fill();
+		this.setImage(road);
+		this.x = x;
+		this.y = y;
+	}
+	public void act(){
+		addLight();	
+		countCars();		
+		warnCar();
+	}
+	@SuppressWarnings("unchecked")
+	private void warnCar() {		
+		ArrayList<IntFace> cars = (ArrayList<IntFace>) getObjectsInRange(70, IntFace.class);
+		for(IntFace c : cars){
+			if(getObjectsInRange(70, Car.class) != null) {
+				c.setMove(true);
+			}else {
+				c.setMove(false);
+			}			
+		}
+	
+	}	
+	@SuppressWarnings("unchecked")
+	private void countCars() {
+		if(getObjectsInRange(75, Car.class) != null){	
+			if(getObjectsInRange(70, Car.class) != null){	//adds to nearInt array.
+				ArrayList<IntFace> cars = (ArrayList<IntFace>) getObjectsInRange(70, IntFace.class);
+				ArrayList<IntFace> nearInt2 = (ArrayList<IntFace>) nearInt.clone();				
+				for(IntFace c : cars){					
+					if(!nearInt2.contains(c)){
+						nearInt.add(c);						
+					}
+				}								
+			}
+			if(getObjectsInRange(25, Car.class) != null){	//adds to inInt array.
+				ArrayList<IntFace> cars = (ArrayList<IntFace>) getObjectsInRange(25, IntFace.class);
+				ArrayList<IntFace> inInt2 = (ArrayList<IntFace>) inInt.clone();
+				for(IntFace c : cars){					
+					if(!inInt2.contains(c)){
+						inInt.add(c);						
+					}					
+				}								
+			}
+			if(getObjectsInRange(30, Car.class) != null){	//subtracts from inInt array.
+				ArrayList<IntFace> cars = (ArrayList<IntFace>) getObjectsInRange(30, Car.class);
+				ArrayList<IntFace> inInt2 = (ArrayList<IntFace>) inInt.clone();
+				for(IntFace c : cars){
+					if(inInt2.contains(c)){
+						inInt.remove(c);						
+					}
+				}
+			}
+			if(getObjectsInRange(75, Car.class) != null){	//subtracts from nearInt array.
+				ArrayList<IntFace> cars = (ArrayList<IntFace>) getObjectsInRange(75, Car.class);
+				ArrayList<IntFace> nearInt2 = (ArrayList<IntFace>) nearInt.clone();
+				for(IntFace c : cars){
+					if(nearInt2.contains(c)){
+						nearInt.remove(c);						
+					}
+				}
+			}
+		}
+	}	
+	private void addLight() {
+		if(set == START){
+			getWorld().addObject(new TrafficLight(Direction.UP, NS), this.x, this.y-25);
+			getWorld().addObject(new TrafficLight(Direction.DOWN, NS), this.x, this.y+25);		
+			getWorld().addObject(new TrafficLight(Direction.RIGHT, EW), this.x+25, this.y);
+			getWorld().addObject(new TrafficLight(Direction.LEFT, EW), this.x-25, this.y);
+		}
+		if(set < END){set++;}			
+	}		
+}
