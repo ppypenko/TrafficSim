@@ -1,0 +1,53 @@
+package edu.csc150;
+
+import java.awt.Color;
+import greenfoot.World;
+
+public class TrafficWorld extends World {
+	private final static int WIDTH = 1000, HEIGHT = 750;
+	private int VERTICAL = 24, HORIZONTAL = 25, RIGHT = 40, LEFT = 710, UP = 992, DOWN = 10, X = 25, Y = 24;
+	public TrafficWorld(){
+		
+		super(WIDTH, HEIGHT, 1);
+		
+		this.getBackground().setColor(Color.GREEN);
+		this.getBackground().fill();
+				
+		
+		for(byte x=0; x<7; x++){	//vertical road
+			this.addObject(new Road(50, getHeight()), VERTICAL, getHeight()/2);
+			VERTICAL += 159;
+		}				
+		for(byte y=0;y<5; y++){		//Horizontal road
+			this.addObject(new Road(getWidth(), 50), getWidth()/2, HORIZONTAL);
+			HORIZONTAL += 175;
+		}
+		
+		this.addObject(new Addcar(), 80, 80);
+		
+		for (int q=0; q<5; q++){
+			for(int c=0; c<7; c++){
+				this.addObject(new Intersection(X, Y), X, Y);
+				X+=159;
+			}
+			Y+=175;
+			X=25;
+		}
+//		for(int q = 0; q < 5; q++){
+//			this.addObject(new Car(Direction.RIGHT), 0, RIGHT);
+//			RIGHT +=175;
+//		}
+//		for (int q=0; q<5; q++){
+//			this.addObject(new Car(Direction.LEFT), getWidth(), LEFT);
+//			LEFT -=175;	
+//		}
+//		for (int q=0; q<7; q++){
+//			this.addObject(new Car(Direction.DOWN), DOWN, 0);
+//			DOWN +=159;	
+//		}
+//		for (int q=0; q<7; q++){
+//			this.addObject(new Car(Direction.UP), UP, getHeight());
+//			UP -=159;
+//		}				
+	}
+}
