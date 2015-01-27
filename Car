@@ -1,0 +1,203 @@
+package edu.csc150;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+import greenfoot.Actor;
+
+
+public class Car extends Actor implements IntFace {
+	
+	private boolean check = false, crash = false;
+	private static final int EXP1 = 6, EXP2 = 12, EXP3 = 18, EXP4 = 24,START = 0, RIGHT = 0, DOWN = 90, LEFT = 180, UP = 270, GREEN = 1, YELLOW = 2, RED = 3;
+	Random mixer = new Random();
+	private int exp=0, num, turn, move = mixer.nextInt(3), count = 0;
+	static String[] car = {"images/topCarPurple.png", "images/topCarRed.png", "images/topCarBlue.png", "images/topCarYellow.png"};
+	static String[] boom = {"images/explosion1.png", "images/explosion2.png", "images/explosion3.png"};
+	
+	public Car(Direction r){				
+		this.setImage(car[mixer.nextInt(4)]);
+		setRotation(r.GetRotation());
+	}	
+	public void act(){
+		move(move);
+		//newLocation();	
+		moveCar();		
+		checkIntersection();			
+		
+		removeOrCrash();
+		
+	}
+	private void removeOrCrash() {
+		if(crash){
+			exp++;
+		}
+		if(isAtEdge()){
+			getWorld().removeObject(this);
+		}else{
+			hasCrash();
+		}
+	}	
+	private void checkIntersection() {	
+		if(isTouching(Intersection.class)){
+			num = mixer.nextInt(3);
+			Actor i = (Intersection) getOneIntersectingObject(Intersection.class);
+			if(num == 0){
+				turnRight(i);
+			} else if(num == 1){
+				turnLeft(i);
+			} 				
+		}	
+		setRotation(turn);
+	}
+	private void turnLeft(Actor i) {		
+		if(this.getRotation() == RIGHT && this.getX() == i.getX()+15){
+			turn = UP;
+		}
+		else if(this.getRotation() == DOWN && this.getY() == i.getY()+15){
+			turn = RIGHT;
+		}
+		else if(this.getRotation() == LEFT && this.getX() == i.getX()-15){
+			turn = DOWN;
+		}
+		else if(this.getRotation() == UP && this.getY() == i.getY()-15){
+			turn = LEFT;
+		}		
+	}
+	private void turnRight(Actor i) {		
+		if(this.getRotation() == RIGHT && this.getX() == i.getX()-15){
+			turn = DOWN;
+		}
+		else if(this.getRotation() == DOWN && this.getY() == i.getY()-15){
+			turn = LEFT;
+		}
+		else if(this.getRotation() == LEFT && this.getX() == i.getX()+15){
+			turn = UP;
+		}
+		else if(this.getRotation() == UP && this.getY() == i.getY()+15){
+			turn = RIGHT;
+		}		
+	}
+	@SuppressWarnings("unchecked")
+	private void moveCar() {
+		if(check){
+			ArrayList<TrafficLight> light = (ArrayList<TrafficLight>) getObjectsInRange(30, TrafficLight.class);
+			for(TrafficLight l : light){
+				if(this.getRotation() == RIGHT && l.getRotation() == LEFT){
+					if(l.getColor() == RED){
+						if(this.getX() <= l.getX()-5){
+							move = 0;								
+						}
+					}else if(l.getColor() == YELLOW){
+						if(this.getX() <= l.getX()-35){
+							move = 1;
+						}
+					}else if(l.getColor() == GREEN){
+						move = 2;
+					}
+				}else if(this.getRotation() == LEFT && l.getRotation() == RIGHT){
+					if(l.getColor() == RED){
+						if(this.getX() >= l.getX()+5){
+							move = 0;
+						}
+					}else if(l.getColor() == YELLOW){
+						if(this.getX() >= l.getX()+35){
+							move = 1;
+						}
+					}else if(l.getColor() == GREEN){
+						move = 2;
+					}
+				}else if(this.getRotation() == DOWN && l.getRotation() == UP){
+					if(l.getColor() == RED){
+						if(this.getY() <= l.getY()-5){
+							move = 0;
+						}
+					}else if(l.getColor() == YELLOW){
+						if(this.getY() <= l.getY()-35){
+							move = 1;
+						}
+					}else if(l.getColor() == GREEN){
+						move = 2;
+					}
+				}else if(this.getRotation() == UP && l.getRotation() == DOWN){
+					if(l.getColor() == RED){
+						if(this.getY() >= l.getY()+5){
+							move = 0;
+						}
+					}else if(l.getColor() == YELLOW){
+						if(this.getY() >= l.getY()+35){
+							move = 1;
+						}
+					}else if(l.getColor() == GREEN){
+						move = 2;
+					}
+				}					
+			}
+		}		
+	}
+	public void setMove(boolean notify){
+			check = notify;	
+	}
+	@SuppressWarnings("unused")
+	private void newLocation() {
+		if(isAtEdge() && getX() == getWorld().getWidth() - 1){
+			setLocation(1, getY());;
+		}
+		else if (isAtEdge() && getX() == 0){
+			setLocation(getWorld().getWidth(), getY());
+		}
+		else if (isAtEdge() && getY() == getWorld().getHeight() - 1){
+			setLocation(getX(), 1);
+		}
+		else if (isAtEdge() && getY() == 0){
+			setLocation(getX(), getWorld().getHeight());
+		}
+	}
+	public static void carCollision() throws Exception {
+		try{
+			throw new Error("Cars collided.");
+		}
+		catch(Error e){
+			//e.printStackTrace();
+		}
+		
+	}
+
+	public void hasCrash() {
+		
+		Car b = (Car) getOneIntersectingObject(Car.class); 
+		if(!isAtEdge() && b != null || crash )  
+		{  
+			if(exp == START){
+				try {
+					carCollision();
+				} catch (Exception e) {
+					//e.printStackTrace();
+				} finally{
+					System.out.println("Cars crash and explode.");
+				}
+			}			
+			move = 0;
+			crash = true;
+			if(exp == EXP1){
+				this.setImage(boom[0]);
+			}
+			else if(exp == EXP2){
+				this.setImage(boom[1]);
+			}
+			else if(exp == EXP3){
+				this.setImage(boom[2]);
+			}
+			else if(exp == EXP4){
+				getWorld().removeObject(b);
+				getWorld().removeObject(this);
+			}
+		} 		
+	}
+	public void setCrash(boolean smash){
+		crash = smash;
+	}	
+	public int getM(){
+		return move;
+	}	
+}
