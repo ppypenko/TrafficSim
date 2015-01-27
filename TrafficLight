@@ -1,0 +1,49 @@
+package edu.csc150;
+
+import greenfoot.Actor;
+
+
+public class TrafficLight extends Actor {
+	
+	private static final int GREEN = 1, RED = 201, YELLOW = 151, RESET = 400, NS = 1, EW = 2, G = 1, Y = 2, R = 3;
+	public int COLOR;
+	static String[] light = {"images/trafficLightGreen.png", "images/trafficLightYellow.png", "images/trafficLightRed.png"};
+	private int set;
+	
+	public TrafficLight(Direction r, int c){		
+		setRotation(r.GetRotation());
+		if(c == NS){
+			COLOR = G;
+			set = 0;
+		}else if(c == EW){
+			COLOR = R;
+			set = 200;
+		}
+	}
+	public void act(){
+		changeLight();
+		
+	}
+	private void changeLight() {
+		if(set == GREEN){
+			this.setImage("images/trafficLightGreen.png");
+			COLOR = G;
+		}
+		else if(set == YELLOW){
+			this.setImage("images/trafficLightYellow.png");
+			COLOR = Y;
+		}
+		else if(set == RED){
+			this.setImage("images/trafficLightRed.png");
+			COLOR = R;
+		}
+		else if(set == RESET){
+			set=0;
+		}
+		set++;
+	}	
+	public int getColor(){
+		return COLOR;
+	}
+	
+}
