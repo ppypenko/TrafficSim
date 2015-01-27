@@ -1,0 +1,17 @@
+package edu.csc150;
+
+import java.awt.Color;
+import greenfoot.GreenfootImage;
+import greenfoot.Actor;
+
+public class Road extends Actor{
+
+	
+	public Road(int width, int height){
+		
+		GreenfootImage road = new GreenfootImage(width, height);
+		road.setColor(Color.GRAY);
+		road.fill();
+		this.setImage(road);		
+	}		
+}
