@@ -1,0 +1,85 @@
+package edu.csc150;
+
+import java.awt.Color;
+import java.util.Random;
+
+import greenfoot.Actor;
+import greenfoot.GreenfootImage;
+
+public class Addcar extends Actor {
+	
+	private static final int MAXCAR = 20,RESETR = 40, RESETD = 10, RESETL = 710, RESETU = 990;
+	private int countcar = 0, rand, RIGHT = 40, DOWN = 10, LEFT = 710, UP = 990, count;
+	Random mixer = new Random();
+	
+	
+	public Addcar() {
+		GreenfootImage patch = new GreenfootImage(5, 5);
+		patch.setColor(Color.GREEN);
+		patch.fill();
+		this.setImage(patch);
+	}
+	
+	public void act(){
+		 
+		 loopAdd();
+	}
+
+	private void loopAdd() {
+		if(count == 1){
+			 addCar();
+		 }else if(count == 10){
+			 count = 0;
+		 }
+		 count++;
+	}
+	private void addCar() {
+		if(countcar < MAXCAR){
+			rand = mixer.nextInt(4);
+			if(rand == 0){
+				rand = mixer.nextInt(5);
+				for (int q=0; q<5; q++){//right	
+					if(q == rand){
+						getWorld().addObject(new Car(Direction.RIGHT), 0, RIGHT);	
+						q = 5;						
+						countcar++;
+					}	
+					RIGHT +=175;	
+				}
+				RIGHT = RESETR;
+			}else if(rand == 1){
+				rand = mixer.nextInt(5);
+				for (int q=0; q<5; q++){//left
+					if(q == rand){
+						getWorld().addObject(new Car(Direction.LEFT), getWorld().getWidth()-10, LEFT);	
+						q = 5;
+						countcar++;
+					}	LEFT -=175;	
+				}
+				LEFT = RESETL;
+			}else if(rand == 2){
+				rand = mixer.nextInt(7);
+				for (int q=0; q<7; q++){//down
+					if(q == rand){
+						getWorld().addObject(new Car(Direction.DOWN), DOWN, 0);
+						q = 7;
+						countcar++;
+					}	DOWN +=159;	
+				}
+				DOWN = RESETD;
+			}else if(rand == 3){
+				rand = mixer.nextInt(7);
+				for (int q=0; q<7; q++){//up	
+					if(q == rand){
+						getWorld().addObject(new Car(Direction.UP), UP, getWorld().getHeight()-10);
+						q = 7;
+						countcar++;
+					}	UP -=159;	
+				}
+				UP = RESETU;
+			}if(countcar == 10){
+				countcar = 0;
+			}
+		}
+	}
+}
