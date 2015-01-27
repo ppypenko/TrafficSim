@@ -1,0 +1,6 @@
+package edu.csc150;
+
+public interface IntFace {
+
+	public void setMove(boolean notify);
+}
