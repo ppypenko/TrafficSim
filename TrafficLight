@@ -8,42 +8,40 @@ public class TrafficLight extends Actor {
 	private static final int GREEN = 1, RED = 201, YELLOW = 151, RESET = 400, NS = 1, EW = 2, G = 1, Y = 2, R = 3;
 	public int COLOR;
 	static String[] light = {"images/trafficLightGreen.png", "images/trafficLightYellow.png", "images/trafficLightRed.png"};
-	private int set;
+	private int count;
 	
 	public TrafficLight(Direction r, int c){		
 		setRotation(r.GetRotation());
 		if(c == NS){
 			COLOR = G;
-			set = 0;
+			count = GREEN;
 		}else if(c == EW){
 			COLOR = R;
-			set = 200;
+			count = RED;
 		}
 	}
 	public void act(){
 		changeLight();
-		
 	}
 	private void changeLight() {
-		if(set == GREEN){
-			this.setImage("images/trafficLightGreen.png");
+		if(count == GREEN){
+			this.setImage(light[0]);
 			COLOR = G;
 		}
-		else if(set == YELLOW){
-			this.setImage("images/trafficLightYellow.png");
+		else if(count == YELLOW){
+			this.setImage(light[1]);
 			COLOR = Y;
 		}
-		else if(set == RED){
-			this.setImage("images/trafficLightRed.png");
+		else if(count == RED){
+			this.setImage(light[2]);
 			COLOR = R;
 		}
-		else if(set == RESET){
-			set=0;
+		else if(count == RESET){
+			count=0;
 		}
-		set++;
+		count++;
 	}	
 	public int getColor(){
 		return COLOR;
-	}
-	
+	}	
 }
