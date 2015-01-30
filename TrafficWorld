@@ -1,10 +1,12 @@
 package edu.csc150;
 
 import java.awt.Color;
+
 import greenfoot.World;
 
 public class TrafficWorld extends World {
 	private final static int WIDTH = 1000, HEIGHT = 750;
+	@SuppressWarnings("unused")
 	private int VERTICAL = 24, HORIZONTAL = 25, RIGHT = 40, LEFT = 710, UP = 992, DOWN = 10, X = 25, Y = 24;
 	public TrafficWorld(){
 		
