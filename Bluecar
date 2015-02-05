@@ -1,0 +1,16 @@
+package edu.csc150;
+
+public class Bluecar extends Car{
+	
+	public Bluecar(Direction r) {
+		super(r);
+		this.setImage("images/topCarBlue.png");
+		setRotation(r.GetRotation());
+	}
+	public void act(){
+		this.move(move);
+		this.moveCar();
+		this.checkIntersection();
+		this.removeOrCrash();
+	}
+}
