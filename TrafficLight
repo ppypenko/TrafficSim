@@ -45,3 +45,4 @@ public class TrafficLight extends Actor {
 		return COLOR;
 	}	
 }
+
