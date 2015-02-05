@@ -6,10 +6,14 @@ import greenfoot.Actor;
 
 public class Car extends Actor implements IntFace {
 	
-	private boolean check = false, crash = false;
-	private static final int EXP1 = 6, EXP2 = 12, EXP3 = 18, EXP4 = 24,START = 0, RIGHT = 0, DOWN = 90, LEFT = 180, UP = 270, GREEN = 1, YELLOW = 2, RED = 3;
+	private boolean check = false;
+	protected boolean crash = false;
+	private static final int EXP1 = 6, EXP2 = 12, EXP3 = 18, EXP4 = 24,START = 0, RIGHT = 0, DOWN = 90, LEFT = 180, UP = 270, GREEN = 1, YELLOW = 2, RED = 3 ,SLOW = 15, STOP = 5;
 	Random mixer = new Random();
-	private int exp=0, num, move = 2, oldTurn;
+	protected int exp=0;
+	protected int num;
+	protected int move = 2;
+	private int oldTurn;
 	static String[] car = {"images/topCarPurple.png", "images/topCarRed.png", "images/topCarBlue.png", "images/topCarYellow.png"};
 	static String[] boom = {"images/explosion1.png", "images/explosion2.png", "images/explosion3.png"};
 	
@@ -24,7 +28,7 @@ public class Car extends Actor implements IntFace {
 		checkIntersection();
 		removeOrCrash();
 	}
-	private void removeOrCrash() {
+	protected void removeOrCrash() {
 		if(crash){
 			exp++;
 		}
@@ -34,7 +38,7 @@ public class Car extends Actor implements IntFace {
 			hasCrash();
 		}
 	}	
-	private void checkIntersection() {	
+	protected void checkIntersection() {	
 		if(isTouching(Intersection.class)){
 			num = mixer.nextInt(3);
 			Actor i = getOneIntersectingObject(Intersection.class);
@@ -45,7 +49,7 @@ public class Car extends Actor implements IntFace {
 			}
 		}
 	}
-	private void turnLeft(Actor i) {		
+	protected void turnLeft(Actor i) {		
 		oldTurn = this.getRotation();
 		if(this.getRotation() == RIGHT && this.getX() == i.getX()+15){
 			this.setRotation(UP);
@@ -61,7 +65,7 @@ public class Car extends Actor implements IntFace {
 		}
 		assert (oldTurn != this.getRotation() || this.getRotation() != oldTurn + 180 || this.getRotation() != oldTurn - 180);
 	}
-	private void turnRight(Actor i) {	
+	protected void turnRight(Actor i) {	
 		oldTurn = this.getRotation();
 		if(this.getRotation() == RIGHT && this.getX() == i.getX()-15){
 			this.setRotation(DOWN);
@@ -78,20 +82,20 @@ public class Car extends Actor implements IntFace {
 		assert (oldTurn != this.getRotation() || this.getRotation() != oldTurn + 180 || this.getRotation() != oldTurn - 180);
 	}
 	@SuppressWarnings("unchecked")
-	private void moveCar() {
+	protected void moveCar() {
 		if(check){
 			ArrayList<TrafficLight> light = (ArrayList<TrafficLight>) getObjectsInRange(30, TrafficLight.class);
 			for(TrafficLight l : light){
 				if(this.getRotation() == RIGHT && l.getRotation() == LEFT){
 					if(l.getColor() == RED && !isTouching(Intersection.class)){
-						if(this.getX() <= l.getX()-5){
+						if(this.getX() <= l.getX()-STOP){
 							move = 0;								
 						}
 						else{
 							move = 2;
 						}
 					}else if(l.getColor() == YELLOW && this.getIntersectingObjects(Intersection.class) == null){
-						if(this.getX() <= l.getX()-15){
+						if(this.getX() <= l.getX()-SLOW){
 							move = 1;
 						}
 						else{
@@ -102,14 +106,14 @@ public class Car extends Actor implements IntFace {
 					}
 				}else if(this.getRotation() == LEFT && l.getRotation() == RIGHT){
 					if(l.getColor() == RED && !isTouching(Intersection.class)){
-						if(this.getX() >= l.getX()+5){
+						if(this.getX() >= l.getX()+STOP){
 							move = 0;
 						}
 						else{
 							move = 2;
 						}
 					}else if(l.getColor() == YELLOW && this.getIntersectingObjects(Intersection.class) == null){
-						if(this.getX() >= l.getX()+15){
+						if(this.getX() >= l.getX()+SLOW){
 							move = 1;
 						}
 						else{
@@ -120,14 +124,14 @@ public class Car extends Actor implements IntFace {
 					}
 				}else if(this.getRotation() == DOWN && l.getRotation() == UP){
 					if(l.getColor() == RED && !isTouching(Intersection.class)){
-						if(this.getY() <= l.getY()-5){
+						if(this.getY() <= l.getY()-STOP){
 							move = 0;
 						}
 						else{
 							move = 2;
 						}
 					}else if(l.getColor() == YELLOW && this.getIntersectingObjects(Intersection.class) == null){
-						if(this.getY() <= l.getY()-15){
+						if(this.getY() <= l.getY()-SLOW){
 							move = 1;
 						}
 						else{
@@ -138,14 +142,14 @@ public class Car extends Actor implements IntFace {
 					}
 				}else if(this.getRotation() == UP && l.getRotation() == DOWN){
 					if(l.getColor() == RED && !isTouching(Intersection.class)){
-						if(this.getY() >= l.getY()+5){
+						if(this.getY() >= l.getY()+STOP){
 							move = 0;
 						}
 						else{
 							move = 2;
 						}
 					}else if(l.getColor() == YELLOW && this.getIntersectingObjects(Intersection.class) == null){
-						if(this.getY() >= l.getY()+15){
+						if(this.getY() >= l.getY()+SLOW){
 							move = 1;
 						}
 						else{
@@ -163,7 +167,7 @@ public class Car extends Actor implements IntFace {
 			check = notify;	
 	}
 	@SuppressWarnings("unused")
-	private void newLocation() {
+	protected void newLocation() {
 		if(isAtEdge() && getX() == getWorld().getWidth() - 1){
 			setLocation(1, getY());;
 		}
