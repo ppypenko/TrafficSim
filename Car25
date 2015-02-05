@@ -1,0 +1,21 @@
+package edu.csc150;
+
+import greenfoot.Actor;
+
+public abstract class Car25 extends Car{
+
+	public Car25(Direction r) {
+		super(r);
+		setRotation(r.GetRotation());
+	}
+	protected void checkIntersection() {	
+		if(isTouching(Intersection.class)){
+			num = mixer.nextInt(4);
+			Actor i = getOneIntersectingObject(Intersection.class);
+			if(num == 0){
+				turn(i);
+			} 
+		}
+	}
+	protected abstract void turn(Actor i);
+}
