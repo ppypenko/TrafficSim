@@ -8,8 +8,8 @@ import greenfoot.GreenfootImage;
 
 public class Addcar extends Actor {
 	
-	private static final int RESETR = 40, RESETD = 10, RESETL = 710, RESETU = 990, LOOP = 20;
-	private int rand, RIGHT = 40, DOWN = 10, LEFT = 710, UP = 990, count;
+	private static final int RESETR = 140, RESETD = 110, RESETL = 110, RESETU = 140, LOOP = 20, BLUE = 0, RED = 1, YELLOW = 2, PURPLE = 3;
+	private int rand, RIGHT = 140, DOWN = 110, LEFT = 110, UP = 140, count;
 	Random mixer = new Random();
 	
 	public Addcar() {
@@ -35,7 +35,17 @@ public class Addcar extends Actor {
 			rand = mixer.nextInt(5);
 			for (int q=0; q<5; q++){//right	
 				if(q == rand){
-					getWorld().addObject(new Car(Direction.RIGHT), 1, RIGHT);	
+					rand = mixer.nextInt(4);
+					if(rand == BLUE){
+						getWorld().addObject(new Bluecar(Direction.RIGHT), 1, RIGHT);
+					}else if(rand == RED){
+						getWorld().addObject(new Redcar(Direction.RIGHT), 1, RIGHT);
+					}else if(rand == YELLOW){
+						getWorld().addObject(new Yellowcar(Direction.RIGHT), 1, RIGHT);
+					}else if(rand == PURPLE){
+						getWorld().addObject(new Purplecar(Direction.RIGHT), 1, RIGHT);
+					}
+					//getWorld().addObject(new Car(Direction.RIGHT), 1, RIGHT);	
 					q = 5;
 				}	
 				RIGHT +=175;	
@@ -46,16 +56,36 @@ public class Addcar extends Actor {
 			rand = mixer.nextInt(5);
 			for (int q=0; q<5; q++){//left
 				if(q == rand){
-					getWorld().addObject(new Car(Direction.LEFT), getWorld().getWidth()-1, LEFT);	
+					rand = mixer.nextInt(4);
+					if(rand == BLUE){
+						getWorld().addObject(new Bluecar(Direction.LEFT), 1, LEFT);
+					}else if(rand == RED){
+						getWorld().addObject(new Redcar(Direction.LEFT), 1, LEFT);
+					}else if(rand == YELLOW){
+						getWorld().addObject(new Yellowcar(Direction.LEFT), 1, LEFT);
+					}else if(rand == PURPLE){
+						getWorld().addObject(new Purplecar(Direction.LEFT), 1, LEFT);
+					}
+					//getWorld().addObject(new Car(Direction.LEFT), getWorld().getWidth()-1, LEFT);	
 					q = 5;
-				}	LEFT -=175;	
+				}	LEFT +=175;	
 			}
 			LEFT = RESETL;
 		}else if(rand == 2){
 			rand = mixer.nextInt(7);
 			for (int q=0; q<7; q++){//down
 				if(q == rand){
-					getWorld().addObject(new Car(Direction.DOWN), DOWN, 1);
+					rand = mixer.nextInt(4);
+					if(rand == BLUE){
+						getWorld().addObject(new Bluecar(Direction.DOWN), DOWN, 1);
+					}else if(rand == RED){
+						getWorld().addObject(new Redcar(Direction.DOWN), DOWN, 1);
+					}else if(rand == YELLOW){
+						getWorld().addObject(new Yellowcar(Direction.DOWN), DOWN, 1);
+					}else if(rand == PURPLE){
+						getWorld().addObject(new Purplecar(Direction.DOWN), DOWN, 1);
+					}
+					//getWorld().addObject(new Car(Direction.DOWN), DOWN, 1);
 					q = 7;
 				}	DOWN +=159;	
 			}
@@ -64,9 +94,19 @@ public class Addcar extends Actor {
 			rand = mixer.nextInt(7);
 			for (int q=0; q<7; q++){//up	
 				if(q == rand){
-					getWorld().addObject(new Car(Direction.UP), UP, getWorld().getHeight()-1);
+					rand = mixer.nextInt(4);
+					if(rand == BLUE){
+						getWorld().addObject(new Bluecar(Direction.UP), UP, 1);
+					}else if(rand == RED){
+						getWorld().addObject(new Redcar(Direction.UP), UP, 1);
+					}else if(rand == YELLOW){
+						getWorld().addObject(new Yellowcar(Direction.UP), UP, 1);
+					}else if(rand == PURPLE){
+						getWorld().addObject(new Purplecar(Direction.UP), UP, 1);
+					}
+					//getWorld().addObject(new Car(Direction.UP), UP, getWorld().getHeight()-1);
 					q = 7;
-				}	UP -=159;	
+				}	UP +=159;	
 			}
 			UP = RESETU;
 		}
