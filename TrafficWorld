@@ -5,12 +5,12 @@ import java.awt.Color;
 import greenfoot.World;
 
 public class TrafficWorld extends World {
-	private final static int WIDTH = 1000, HEIGHT = 750;
+	private final static int WORLD_WIDTH = 1200, WORLD_HEIGHT = 950, RESETX = 125;
 	@SuppressWarnings("unused")
-	private int VERTICAL = 24, HORIZONTAL = 25, RIGHT = 40, LEFT = 710, UP = 992, DOWN = 10, X = 25, Y = 24;
+	private int VERTICAL = 124, HORIZONTAL = 125, RIGHT = 40, LEFT = 710, UP = 992, DOWN = 10, X = 125, Y = 124;
 	public TrafficWorld(){
 		
-		super(WIDTH, HEIGHT, 1);
+		super(WORLD_WIDTH, WORLD_HEIGHT, 1);
 		
 		this.getBackground().setColor(Color.GREEN);
 		this.getBackground().fill();
@@ -33,7 +33,7 @@ public class TrafficWorld extends World {
 				X+=159;
 			}
 			Y+=175;
-			X=25;
+			X= RESETX;
 		}
 //		for(int q = 0; q < 5; q++){
 //			this.addObject(new Car(Direction.RIGHT), 0, RIGHT);
