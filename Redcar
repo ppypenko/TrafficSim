@@ -1,0 +1,23 @@
+package edu.csc150;
+
+public class Redcar extends Car{
+
+	public Redcar(Direction r) {
+		super(r);
+		this.setImage("images/topCarRed.png");
+		setRotation(r.GetRotation());
+	}
+	public void act(){
+		this.move(move);
+		this.moveCar();
+		this.newLocation();
+		this.removeOrCrash();
+	}
+	public void removeOrCrash(){
+		if(crash){
+			exp++;
+		}
+			hasCrash();
+	}
+
+}
