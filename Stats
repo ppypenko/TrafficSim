@@ -1,0 +1,114 @@
+package edu.csc150;
+
+import java.util.ArrayList;
+import greenfoot.Actor;
+import greenfoot.Greenfoot;
+import greenfoot.GreenfootImage;
+import greenfoot.World;
+
+public class Stats extends Actor{
+
+	private static final int TERMINATE = 0, END = 1, X = 10;
+	private int countdown = 1500, width = 10, height = 10, count = 0, add = 0, added = 0, num = 0, set = 20;
+	ArrayList<Intersection> crossover = new ArrayList<Intersection>();
+	ArrayList<Car> Car = new ArrayList<Car>();
+	private static int[] countCar = new int[4], countBlocks = new int[4], countcars = new int[35];
+	static String[] color = {"Red", "Blue", "Purple", "Yellow"};
+	
+	public Stats(){
+		GreenfootImage road = new GreenfootImage(width, height);
+		road.setTransparency(0);
+		this.setImage(road);
+	}
+	public void act(){
+		totalCars();
+		closeDown();
+		addIntersection();
+	}
+	private void getCars() {
+		if(!crossover.isEmpty()){
+			for(Intersection i : crossover){
+				if(i.getCount()){
+					countcars[num]++;
+				}
+				num++;
+			}
+			num = 0;
+		}
+	}
+	@SuppressWarnings("unchecked")
+	private void addIntersection() {
+		if(count != END){
+			ArrayList<Intersection> intersection = (ArrayList<Intersection>) getObjectsInRange(800, Intersection.class);
+			for(Intersection i : intersection){
+				if(!crossover.contains(i)){
+					crossover.add(i);
+				}
+			}
+			count++;
+		}
+		getCars();
+	}
+	private void closeDown() {
+		countdown--;
+		if(countdown == TERMINATE){
+			 World print = new PrintStats();
+		        print.addObject(this, 600, 425);
+		        Greenfoot.setWorld(print);
+		        getWorld().getBackground().drawString("Total cars: "+Car.size(), X, set);
+		        set += 20;
+		        for(int i=0;i<4;i++){
+		        	getWorld().getBackground().drawString("Number of "+ color[i]+ " Cars: "+countCar[i]+" Average blocks moved per lifespan: "+(countBlocks[i]/countCar[i]), X, set);
+		        	set += 20;
+		        }
+		        for(int i=0;i<crossover.size();i++){
+		        	getWorld().getBackground().drawString("Intersection" + (add += 1) + ": "+ countcars[i], X, set);
+		        	added += countcars[i];
+		        	set += 20;
+		        }
+		        getWorld().getBackground().drawString("Total Intersections: "+crossover.size()+". Average cars crossed: "+added / crossover.size(), X, set);
+		}
+	}
+	@SuppressWarnings("unchecked")
+	private void totalCars() {
+		if(getObjectsInRange(700, Car.class) != null){
+			ArrayList<Car> cars = (ArrayList<Car>) getObjectsInRange(800, Car.class);
+			for(Car c : cars){
+				switch(c.getColor()){
+				case "RED":
+					if(!Car.contains(c)){
+						Car.add(c);
+						countCar[0]++;
+					}
+					if(c.getTouch()){
+						countBlocks[0]++;
+					}break;
+				case "BLUE":
+					if(!Car.contains(c)){
+						Car.add(c);
+						countCar[1]++;
+					}
+					if(c.getTouch()){
+						countBlocks[1]++;
+					}break;
+				case "PURPLE":
+					if(!Car.contains(c)){
+						Car.add(c);
+						countCar[2]++;
+					}
+					if(c.getTouch()){
+						countBlocks[2]++;
+					}break;
+				case "YELLOW":
+					if(!Car.contains(c)){
+						Car.add(c);
+						countCar[3]++;
+					}
+					if(c.getTouch()){
+						countBlocks[3]++;
+					}break;
+				}
+			}
+		}
+	}
+}
