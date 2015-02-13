@@ -1,0 +1,16 @@
+package edu.csc150;
+
+import java.awt.Color;
+import greenfoot.World;
+
+public class PrintStats extends World{
+	
+	private final static int WORLD_WIDTH = 1200, WORLD_HEIGHT = 950;
+	public PrintStats(){
+		super(WORLD_WIDTH, WORLD_HEIGHT, 1);
+		
+		this.getBackground().setColor(Color.BLACK);
+		this.getBackground().fill();
+		this.getBackground().setColor(Color.WHITE);
+	}
+}
