@@ -4,11 +4,12 @@ import greenfoot.Actor;
 
 public class Yellowcar extends Car25{
 	
+	static String img = "images/topCarYellow.png";
 	public Yellowcar(Direction r) {
 		super(r);
-		this.setImage("images/topCarYellow.png");
+		this.setImage(img);
 		setRotation(r.GetRotation());
-		
+		COLOR = "YELLOW";
 	}
 	public void act(){
 		this.move(move);
@@ -21,7 +22,6 @@ public class Yellowcar extends Car25{
 	protected void turn(Actor i) {
 		turnRight(i);
 	}
-	
 	public void removeOrCrash(){
 		if(crash){
 			exp++;
