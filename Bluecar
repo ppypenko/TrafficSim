@@ -2,10 +2,12 @@ package edu.csc150;
 
 public class Bluecar extends Car{
 	
+	static String img = "images/topCarBlue.png";
 	public Bluecar(Direction r) {
 		super(r);
-		this.setImage("images/topCarBlue.png");
+		this.setImage(img);
 		setRotation(r.GetRotation());
+		COLOR = "BLUE";
 	}
 	public void act(){
 		this.move(move);
