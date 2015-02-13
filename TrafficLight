@@ -2,7 +2,6 @@ package edu.csc150;
 
 import greenfoot.Actor;
 
-
 public class TrafficLight extends Actor {
 	
 	private static final int GREEN = 1, RED = 201, YELLOW = 151, RESET = 400, NS = 1, EW = 2, G = 1, Y = 2, R = 3;
@@ -13,9 +12,11 @@ public class TrafficLight extends Actor {
 	public TrafficLight(Direction r, int c){		
 		setRotation(r.GetRotation());
 		if(c == NS){
+			this.setImage(light[0]);
 			COLOR = G;
 			count = GREEN;
 		}else if(c == EW){
+			this.setImage(light[2]);
 			COLOR = R;
 			count = RED;
 		}
@@ -45,4 +46,3 @@ public class TrafficLight extends Actor {
 		return COLOR;
 	}	
 }
-
