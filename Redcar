@@ -2,10 +2,12 @@ package edu.csc150;
 
 public class Redcar extends Car{
 
+	static String img = "images/topCarRed.png";
 	public Redcar(Direction r) {
 		super(r);
-		this.setImage("images/topCarRed.png");
+		this.setImage(img);
 		setRotation(r.GetRotation());
+		COLOR = "RED";
 	}
 	public void act(){
 		this.move(move);
@@ -17,7 +19,8 @@ public class Redcar extends Car{
 		if(crash){
 			exp++;
 		}
-			hasCrash();
+		hasCrash();
 	}
-
 }
+
+
