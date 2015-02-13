@@ -2,7 +2,6 @@ package edu.csc150;
 
 import java.awt.Color;
 import java.util.Random;
-
 import greenfoot.Actor;
 import greenfoot.GreenfootImage;
 
@@ -58,13 +57,13 @@ public class Addcar extends Actor {
 				if(q == rand){
 					rand = mixer.nextInt(4);
 					if(rand == BLUE){
-						getWorld().addObject(new Bluecar(Direction.LEFT), 1, LEFT);
+						getWorld().addObject(new Bluecar(Direction.LEFT), getWorld().getWidth()-1, LEFT);
 					}else if(rand == RED){
-						getWorld().addObject(new Redcar(Direction.LEFT), 1, LEFT);
+						getWorld().addObject(new Redcar(Direction.LEFT), getWorld().getWidth()-1, LEFT);
 					}else if(rand == YELLOW){
-						getWorld().addObject(new Yellowcar(Direction.LEFT), 1, LEFT);
+						getWorld().addObject(new Yellowcar(Direction.LEFT), getWorld().getWidth()-1, LEFT);
 					}else if(rand == PURPLE){
-						getWorld().addObject(new Purplecar(Direction.LEFT), 1, LEFT);
+						getWorld().addObject(new Purplecar(Direction.LEFT), getWorld().getWidth()-1, LEFT);
 					}
 					//getWorld().addObject(new Car(Direction.LEFT), getWorld().getWidth()-1, LEFT);	
 					q = 5;
@@ -96,13 +95,13 @@ public class Addcar extends Actor {
 				if(q == rand){
 					rand = mixer.nextInt(4);
 					if(rand == BLUE){
-						getWorld().addObject(new Bluecar(Direction.UP), UP, 1);
+						getWorld().addObject(new Bluecar(Direction.UP), UP, getWorld().getHeight()-1);
 					}else if(rand == RED){
-						getWorld().addObject(new Redcar(Direction.UP), UP, 1);
+						getWorld().addObject(new Redcar(Direction.UP), UP, getWorld().getHeight()-1);
 					}else if(rand == YELLOW){
-						getWorld().addObject(new Yellowcar(Direction.UP), UP, 1);
+						getWorld().addObject(new Yellowcar(Direction.UP), UP, getWorld().getHeight()-1);
 					}else if(rand == PURPLE){
-						getWorld().addObject(new Purplecar(Direction.UP), UP, 1);
+						getWorld().addObject(new Purplecar(Direction.UP), UP, getWorld().getHeight()-1);
 					}
 					//getWorld().addObject(new Car(Direction.UP), UP, getWorld().getHeight()-1);
 					q = 7;
