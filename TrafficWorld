@@ -1,55 +1,31 @@
 package edu.csc150;
 
-import java.awt.Color;
+import greenfoot.Actor;
 
-import greenfoot.World;
-
-public class TrafficWorld extends World {
-	private final static int WORLD_WIDTH = 1200, WORLD_HEIGHT = 950, RESETX = 125;
-	@SuppressWarnings("unused")
-	private int VERTICAL = 124, HORIZONTAL = 125, RIGHT = 40, LEFT = 710, UP = 992, DOWN = 10, X = 125, Y = 124;
-	public TrafficWorld(){
-		
-		super(WORLD_WIDTH, WORLD_HEIGHT, 1);
-		
-		this.getBackground().setColor(Color.GREEN);
-		this.getBackground().fill();
-				
-		
-		for(byte x=0; x<7; x++){	//vertical road
-			this.addObject(new Road(50, getHeight()), VERTICAL, getHeight()/2);
-			VERTICAL += 159;
-		}				
-		for(byte y=0;y<5; y++){		//Horizontal road
-			this.addObject(new Road(getWidth(), 50), getWidth()/2, HORIZONTAL);
-			HORIZONTAL += 175;
+public class Yellowcar extends Car25{
+	
+	static String img = "images/topCarYellow.png";
+	public Yellowcar(Direction r) {
+		super(r);
+		this.setImage(img);
+		setRotation(r.GetRotation());
+		COLOR = "YELLOW";
+	}
+	public void act(){
+		this.move(move);
+		this.moveCar();
+		this.newLocation();
+		this.checkIntersection();
+		this.removeOrCrash();
+	}
+	@Override
+	protected void turn(Actor i) {
+		turnRight(i);
+	}
+	public void removeOrCrash(){
+		if(crash){
+			exp++;
 		}
-		
-		this.addObject(new Addcar(), 80, 80);
-		
-		for (int q=0; q<5; q++){
-			for(int c=0; c<7; c++){
-				this.addObject(new Intersection(X, Y), X, Y);
-				X+=159;
-			}
-			Y+=175;
-			X= RESETX;
-		}
-//		for(int q = 0; q < 5; q++){
-//			this.addObject(new Car(Direction.RIGHT), 0, RIGHT);
-//			RIGHT +=175;
-//		}
-//		for (int q=0; q<5; q++){
-//			this.addObject(new Car(Direction.LEFT), getWidth(), LEFT);
-//			LEFT -=175;	
-//		}
-//		for (int q=0; q<7; q++){
-//			this.addObject(new Car(Direction.DOWN), DOWN, 0);
-//			DOWN +=159;	
-//		}
-//		for (int q=0; q<7; q++){
-//			this.addObject(new Car(Direction.UP), UP, getHeight());
-//			UP -=159;
-//		}				
+			hasCrash();
 	}
 }
