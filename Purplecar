@@ -4,11 +4,12 @@ import greenfoot.Actor;
 
 public class Purplecar extends Car25{
 	
+	static String img = "images/topCarPurple.png";
 	public Purplecar(Direction r) {
 		super(r);
-		this.setImage("images/topCarPurple.png");
+		this.setImage(img);
 		setRotation(r.GetRotation());
-		
+		COLOR = "PURPLE";
 	}
 	public void act(){
 		this.move(move);
