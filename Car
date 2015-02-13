@@ -6,20 +6,34 @@ import greenfoot.Actor;
 
 public class Car extends Actor implements IntFace {
 	
-	private boolean check = false;
+	private boolean check = false, touch = false;
 	protected boolean crash = false;
 	private static final int EXP1 = 6, EXP2 = 12, EXP3 = 18, EXP4 = 24,START = 0, RIGHT = 0, DOWN = 90, LEFT = 180, UP = 270, GREEN = 1, YELLOW = 2, RED = 3 ,SLOW = 15, STOP = 5;
 	Random mixer = new Random();
-	protected int exp=0;
-	protected int num;
-	protected int move = 2;
-	private int oldTurn;
+	protected int exp=0, num, move = 2;
+	private int oldTurn, count = 0;
+	protected String COLOR;
 	static String[] car = {"images/topCarPurple.png", "images/topCarRed.png", "images/topCarBlue.png", "images/topCarYellow.png"};
 	static String[] boom = {"images/explosion1.png", "images/explosion2.png", "images/explosion3.png"};
 	
-	public Car(Direction r){				
-		this.setImage(car[mixer.nextInt(4)]);
+	public Car(Direction r){	
+		num = mixer.nextInt(4);
+		this.setImage(car[num]);
 		setRotation(r.GetRotation());
+		switch(num){
+		case 0:
+			COLOR = "PURPLE";
+			break;
+		case 1:
+			COLOR = "RED";
+			break;
+		case 2:
+			COLOR = "BLUE";
+			break;
+		case 3:
+			COLOR = "YELLOW";
+			break;
+		}
 	}
 	public void act(){
 		move(move);
@@ -27,6 +41,21 @@ public class Car extends Actor implements IntFace {
 		moveCar();		
 		checkIntersection();
 		removeOrCrash();
+	}
+	public boolean getTouch(){
+		if(this.isTouching(Intersection.class) && count == 0){
+			touch = true;
+			count++;
+		}else if(!this.isTouching(Intersection.class) && count != 0){
+			touch = false;
+			count = 0;
+		}else{
+			touch = false;
+		}
+		return touch;
+	}
+	public String getColor(){
+		return COLOR;
 	}
 	protected void removeOrCrash() {
 		if(crash){
@@ -166,7 +195,6 @@ public class Car extends Actor implements IntFace {
 	public void setMove(boolean notify){
 			check = notify;	
 	}
-	@SuppressWarnings("unused")
 	protected void newLocation() {
 		if(isAtEdge() && getX() == getWorld().getWidth() - 1){
 			setLocation(1, getY());;
