@@ -1,0 +1,36 @@
+package edu.csc150;
+
+import java.awt.Color;
+import java.util.ArrayList;
+import greenfoot.Actor;
+import greenfoot.GreenfootImage;
+
+public class Dest extends Actor{
+
+	private double num;
+	public Dest(double num){
+		this.num = num;
+		GreenfootImage road = new GreenfootImage(10, 10);
+		road.setColor(Color.WHITE);
+		road.fill();
+		this.setImage(road);
+	}
+	public void act(){
+		removeDest();
+	}
+	private void removeDest() {
+		if(getObjectsInRange(1200, Car.class) != null){
+			ArrayList<Car> cars = (ArrayList<Car>) getObjectsInRange(1200, Car.class);
+			for(Car c : cars){
+				if(c.node == this.num){
+					if(c.crash){
+						getWorld().removeObject(this);
+					}
+				}
+			}
+		}
+	}
+	public double getNum() {
+		return num;
+	}
+}
