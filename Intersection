@@ -12,7 +12,7 @@ public class Intersection extends Actor{
 	private int count = 0;
 	private boolean touch = false;
 	
-	public Intersection(){	
+	public Intersection(){
 		GreenfootImage road = new GreenfootImage(50, 50);
 		road.setColor(Color.GRAY);
 		road.fill();
