@@ -5,8 +5,8 @@ import greenfoot.Actor;
 public class Yellowcar extends Car25{
 	
 	static String img = "images/topCarYellow.png";
-	public Yellowcar(Direction r) {
-		super(r);
+	public Yellowcar(Direction r, double n) {
+		super(r, n);
 		this.setImage(img);
 		setRotation(r.GetRotation());
 		COLOR = "YELLOW";
