@@ -3,8 +3,8 @@ package edu.csc150;
 public class Redcar extends Car{
 
 	static String img = "images/topCarRed.png";
-	public Redcar(Direction r) {
-		super(r);
+	public Redcar(Direction r, double n) {
+		super(r, n);
 		this.setImage(img);
 		setRotation(r.GetRotation());
 		COLOR = "RED";
