@@ -4,8 +4,8 @@ import greenfoot.Actor;
 
 public abstract class Car25 extends Car{
 
-	public Car25(Direction r) {
-		super(r);
+	public Car25(Direction r, double n) {
+		super(r, n);
 		setRotation(r.GetRotation());
 	}
 	protected void checkIntersection() {	
