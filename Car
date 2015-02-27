@@ -11,12 +11,16 @@ public class Car extends Actor implements IntFace {
 	private static final int EXP1 = 6, EXP2 = 12, EXP3 = 18, EXP4 = 24,START = 0, RIGHT = 0, DOWN = 90, LEFT = 180, UP = 270, GREEN = 1, YELLOW = 2, RED = 3 ,SLOW = 15, STOP = 5;
 	Random mixer = new Random();
 	protected int exp=0, num, move = 2;
-	private int oldTurn, count = 0;
+	private int oldTurn, count = 0, sumX, sumY, sum, bestX, bestY;
+	protected double node;
 	protected String COLOR;
+	Intersection intersection = null;
+	ArrayList<Intersection> crossWay = new ArrayList<Intersection>();
 	static String[] car = {"images/topCarPurple.png", "images/topCarRed.png", "images/topCarBlue.png", "images/topCarYellow.png"};
 	static String[] boom = {"images/explosion1.png", "images/explosion2.png", "images/explosion3.png"};
 	
-	public Car(Direction r){	
+	public Car(Direction r, double n){	
+		this.node = n;
 		num = mixer.nextInt(4);
 		this.setImage(car[num]);
 		setRotation(r.GetRotation());
@@ -37,10 +41,117 @@ public class Car extends Actor implements IntFace {
 	}
 	public void act(){
 		move(move);
-		//newLocation();	
-		moveCar();		
+		moveCar();	
 		checkIntersection();
 		removeOrCrash();
+		
+	}
+	@SuppressWarnings("unchecked")
+	private Dest findDest() {
+		Dest Dest = null;
+		ArrayList<Dest> dest = (ArrayList<Dest>) getObjectsInRange(1500, Dest.class);
+		for(Dest d : dest){
+			if(d.getNum() == this.node){
+				Dest = d;
+			}
+		}
+		return Dest;
+	}
+	private void getIntersection(Intersection i) {
+		Dest d = findDest();
+		if(d == null){
+			System.out.println("null");
+		}
+		Intersection c = findPath(i, d);
+		crossWay.clear();
+		sumX = getSum(i.getX(), d.getX());
+		sumY = getSum(i.getY(), d.getY());
+		if(sumX > 30){
+			if(c.getX()+10 > this.getX()){
+				if(this.getRotation() == DOWN && this.getY() == i.getY()+15){
+					this.setRotation(RIGHT);
+				}
+				else if(this.getRotation() == LEFT && this.getX() == i.getX()+15){
+					this.setRotation(UP);
+				}
+				else if(this.getRotation() == UP && this.getY() == i.getY()+15){
+					this.setRotation(RIGHT);
+				}
+			}else if(c.getX() < this.getX()){
+				if(this.getRotation() == RIGHT && this.getX() == i.getX()-15){
+					this.setRotation(DOWN);
+				}
+				else if(this.getRotation() == DOWN && this.getY() == i.getY()-15){
+					this.setRotation(LEFT);
+				}
+				else if(this.getRotation() == UP && this.getY() == i.getY()-15){
+					this.setRotation(LEFT);
+				}
+			}
+		}else if(sumY > 30){
+			if(c.getY() > this.getY()){
+				if(this.getRotation() == RIGHT && this.getX() == i.getX()-15){
+					this.setRotation(DOWN);
+				}
+				else if(this.getRotation() == LEFT && this.getX() == i.getX()-15){
+					this.setRotation(DOWN);
+				}
+				else if(this.getRotation() == UP && this.getY() == i.getY()+15){
+					this.setRotation(RIGHT);
+				}
+			}else if(c.getY() < this.getY()){
+				if(this.getRotation() == RIGHT && this.getX() == i.getX()+15){
+					this.setRotation(UP);
+				}
+				else if(this.getRotation() == LEFT && this.getX() == i.getX()+15){
+					this.setRotation(UP);
+				}
+				else if(this.getRotation() == DOWN && this.getY() == i.getY()-15){
+					this.setRotation(LEFT);
+				}
+			}
+		}
+	}
+	@SuppressWarnings("unchecked")
+	public Intersection findPath(Intersection c, Dest d){
+		bestX = getSum(d.getX(), this.getX());
+		bestY = getSum(d.getY(), this.getY());
+		sumX = getSum(c.getX(), d.getX());
+		sumY = getSum(c.getY(), d.getY());
+		if(sumX <= 30 || sumY <= 30){
+			intersection = c;
+		}else{
+			ArrayList<Intersection> intersections = (ArrayList<Intersection>) getObjectsInRange(300, Intersection.class);
+			for(Intersection i : intersections){
+				if(!crossWay.contains(i)){
+					crossWay.add(i);
+					intersection = findPath(i, d);
+				}
+			}
+		}
+		if(intersection == null){
+			intersection = c;
+		}
+		return intersection;
+	}
+	private int getSum(int a, int b) {
+		if(a > b){
+			sum = a - b;
+		}else{
+			sum = b - a;
+		}
+		return sum;
+	}
+	@SuppressWarnings("unchecked")
+	private void foundDest() {
+		ArrayList<Dest> dest = (ArrayList<Dest>) getObjectsInRange(20, Dest.class);
+		for(Dest d : dest){
+			if(d.getNum() == this.node){
+				System.out.println("Reached Destination.");
+				getWorld().removeObject(d);
+				getWorld().removeObject(this);
+			}
+		}
 	}
 	public boolean getTouch(){
 		if(this.isTouching(Intersection.class) && count == 0){
@@ -62,20 +173,19 @@ public class Car extends Actor implements IntFace {
 			exp++;
 		}
 		if(isAtEdge()){
-			getWorld().removeObject(this);
+			newLocation();
+			//getWorld().removeObject(this);
 		}else{
 			hasCrash();
 		}
+		if(!crash && !isAtEdge()){
+			foundDest();
+		}
 	}	
 	protected void checkIntersection() {	
-		if(isTouching(Intersection.class)){
-			num = mixer.nextInt(3);
-			Actor i = getOneIntersectingObject(Intersection.class);
-			if(num == 0){
-				turnRight(i);
-			} else if(num == 1){
-				turnLeft(i);
-			}
+		if(isTouching(Intersection.class) && !crash){
+			Intersection i = (Intersection) getOneIntersectingObject(Intersection.class);
+			getIntersection(i);
 		}
 	}
 	protected void turnLeft(Actor i) {		
@@ -227,12 +337,18 @@ public class Car extends Actor implements IntFace {
 				} catch (Exception e) {
 					//e.printStackTrace();
 				} finally{
-					System.out.println("Cars crash and explode.");
+					System.out.println("Boom!");
 				}
 			}			
 			move = 0;
 			crash = true;
 			if(exp == EXP1){
+				ArrayList<Dest> dest = (ArrayList<Dest>) getObjectsInRange(20, Dest.class);
+				for(Dest d : dest){
+					if(d.getNum() == this.node){
+						getWorld().removeObject(d);
+					}
+				}
 				this.setImage(boom[0]);
 			}
 			else if(exp == EXP2){
