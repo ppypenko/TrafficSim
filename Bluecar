@@ -3,8 +3,8 @@ package edu.csc150;
 public class Bluecar extends Car{
 	
 	static String img = "images/topCarBlue.png";
-	public Bluecar(Direction r) {
-		super(r);
+	public Bluecar(Direction r, double n) {
+		super(r, n);
 		this.setImage(img);
 		setRotation(r.GetRotation());
 		COLOR = "BLUE";
