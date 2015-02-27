@@ -9,7 +9,7 @@ import greenfoot.World;
 public class Stats extends Actor{
 
 	private static final int TERMINATE = 0, END = 1, X = 10;
-	private int countdown = 1500, width = 10, height = 10, count = 0, add = 0, added = 0, num = 0, set = 20;
+	private int countdown = 10000, width = 10, height = 10, count = 0, add = 0, added = 0, num = 0, set = 20;
 	ArrayList<Intersection> crossover = new ArrayList<Intersection>();
 	ArrayList<Car> Car = new ArrayList<Car>();
 	private static int[] countCar = new int[4], countBlocks = new int[4], countcars = new int[35];
