@@ -1,0 +1,50 @@
+package edu.csc150;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import javax.swing.JOptionPane;
+
+public class StartSim {
+	
+	public static void main(String[] args) {
+			
+		FileWriter input = null;
+		
+		String s = JOptionPane.showInputDialog("Enter amount of Horizontal roads. (MAX 6)");
+		String c = JOptionPane.showInputDialog("Enter amount of Vertical roads. (MAX 8)");
+		String d = JOptionPane.showInputDialog("Enter simulation time. (MIN 300)");
+		String w = JOptionPane.showInputDialog("Enter car spawning time.");
+		try {
+			input = new FileWriter("Sim.txt");
+			if(Integer.parseInt(s) > 6){
+				input.write("6\015\012");
+			}else{
+				input.write(s+"\015\012");
+			}
+			if(Integer.parseInt(c) > 8){
+				input.write("8\015\012");
+			}else{
+				input.write(c+"\015\012");
+			}
+			if(Integer.parseInt(d) < 300){
+				input.write("300\015\012");
+			}else{
+				input.write(d+"\015\012");
+			}
+			input.write(w+"\015\012");
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		finally {
+			if(input != null){
+				try {
+					input.close();
+				} catch (IOException e) {
+					
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+}
